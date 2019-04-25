@@ -1,0 +1,82 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.71'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.2.71'
+}
+
+
+group = 'ru.kilg'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+allprojects {
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:2.1.4.RELEASE"
+        }
+        dependencies {
+            dependency 'org.projectlombok:lombok:1.16.18' // use newest lombok version
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+    }
+
+
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ['-Xjsr305=strict']
+            jvmTarget = '1.8'
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ['-Xjsr305=strict']
+            jvmTarget = '1.8'
+        }
+    }
+
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    runtimeOnly 'com.h2database:h2'
+    compile project(':sample-starter')
+//    compileOnly 'org.projectlombok:lombok'
+//    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+subprojects {
+    dependencies {
+
+//        compileOnly 'org.projectlombok:lombok:1.18.6'
+//        annotationProcessor 'org.projectlombok:lombok:1.18.6'
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        compile 'org.springframework.boot:spring-boot-starter'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    }
+}
+
+
